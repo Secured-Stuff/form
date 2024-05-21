@@ -9,3 +9,8 @@ export interface Product {
   quantity: number;
   price: number;
 }
+
+export interface Option {
+  id: string;
+  label: string;
+}

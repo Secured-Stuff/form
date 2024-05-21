@@ -11,6 +11,7 @@ import {
 } from "./_utils/validation/invoice/invoice.model";
 import { Product } from "./_types/types";
 import { InvoiceItem } from "./_components/InvoiceItem";
+import { FormSelect } from "./_components/FormSelect";
 
 export default function Home() {
   const invoiceForm = useForm<Invoice>({
@@ -55,13 +56,8 @@ export default function Home() {
   };
 
   const sendForm = (data: Invoice) => {
-    console.log("siema");
     console.log(data);
     console.log(products);
-  };
-
-  const elo = () => {
-    console.log("elo");
   };
 
   useEffect(() => {
@@ -105,9 +101,7 @@ export default function Home() {
               />
 
               <div>
-                <h2 className="mb-2 text-lg font-semibold">
-                  Produkty / Products
-                </h2>
+                <h2 className="mb-2 text-lg font-semibold">Produkty</h2>
 
                 <table className="w-full text-left text-sm">
                   <thead className="font-semibold">
@@ -142,6 +136,41 @@ export default function Home() {
               <h2 className="my-2 border-t pt-4 text-right text-lg font-semibold">
                 Łączna cena zakupu: {total}
               </h2>
+              <div className="mt-8">
+                <FormSelect
+                  id="currency"
+                  label="Waluta"
+                  options={[
+                    {
+                      id: "PLN",
+                      label: "PLN",
+                    },
+                    { id: "EUR", label: "EUR" },
+                  ]}
+                  form={invoiceForm.register("currency")}
+                />
+                <FormSelect
+                  id="paymentMethod"
+                  label="Metoda płatności"
+                  options={[
+                    {
+                      id: "BLIK",
+                      label: "BLIK",
+                    },
+                    { id: "PayPal", label: "PayPal" },
+                    { id: "Przelew bankowy", label: "Przelew bankowy" },
+                    { id: "Gotówka", label: "Gotówka" },
+                  ]}
+                  form={invoiceForm.register("paymentMethod")}
+                />
+                <FormField
+                  id="additionalInformation"
+                  type="textarea"
+                  label="Dodatkowe informacje"
+                  placeholder="Dodatkowe informacje"
+                  rows={5}
+                />
+              </div>
             </div>
             <div className="mt-8 flex items-center justify-center">
               <Button>Wyślij</Button>

@@ -12,7 +12,7 @@ export function FormField({
   label,
   id,
   ...rest
-}: Readonly<ComponentProps<"input"> & Props>) {
+}: Readonly<ComponentProps<"input"> & ComponentProps<"textarea"> & Props>) {
   const { control } = useFormContext();
 
   const { field } = useController({
@@ -25,12 +25,21 @@ export function FormField({
       <label htmlFor={id} className="mb-2 block">
         {label}
       </label>
-      <input
-        className="focus:outline-primary w-full rounded-lg border p-3"
-        value={field.value}
-        onChange={field.onChange}
-        {...rest}
-      />
+      {rest.type === "textarea" ? (
+        <textarea
+          className="w-full rounded-lg border p-3 focus:outline-primary"
+          value={field.value}
+          onChange={field.onChange}
+          {...rest}
+        />
+      ) : (
+        <input
+          className="w-full rounded-lg border p-3 focus:outline-primary"
+          value={field.value}
+          onChange={field.onChange}
+          {...rest}
+        />
+      )}
     </div>
   );
 }
