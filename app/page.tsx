@@ -22,6 +22,10 @@ export default function Home() {
     reValidateMode: "onChange",
   });
 
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const minDate = new Date(currentDate.getFullYear(), 0, 1);
+  const maxDate = currentDate;
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [signatureUrl, setSignatureUrl] = useState<string>("");
@@ -107,6 +111,8 @@ export default function Home() {
                 id="date"
                 type="date"
                 label="Select date / Wybierz datę"
+                min={minDate.toISOString().slice(0, 10)}
+                max={maxDate.toISOString().slice(0, 10)}
                 required={true}
               />
               <FormField
@@ -149,7 +155,7 @@ export default function Home() {
                         Price per unit / Cena za szt.
                       </th>
                       <th className="border pr-2 text-right">
-                        Total product price / Łączna cena
+                        Total product price / Łączna cena produktu
                       </th>
                     </tr>
                   </thead>

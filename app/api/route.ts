@@ -33,21 +33,19 @@ export async function POST(request: NextRequest) {
     from: process.env.EMAIL,
     to: process.env.EMAIL,
     subject: `Nowa faktura - ${body.fullName}`,
-    html: `Nowa faktura została przesłana od ${body.fullName} w załączniku, jako plik PDF.`,
+    html: `Nowa faktura od ${body.fullName} została przesłana w załączniku, jako plik PDF.`,
     attachments: [
       {
-        filename: `faktura-${body.fullName.split[0]}.pdf`,
+        filename: `faktura-${body.fullName.replace(" ", "-").toLowerCase()}.pdf`,
         content: pdfBuffer,
         encoding: "base64",
       },
     ],
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailOptions, (error) => {
     if (error) {
       console.log("Wystąpił błąd: " + error);
-    } else {
-      console.log("Wiadomość wysłana: " + info.response);
     }
   });
 
