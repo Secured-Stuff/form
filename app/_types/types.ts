@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 
+export type ButtonStyleType = "Primary" | "Secondary";
 export interface Children {
   children: ReactNode;
 }

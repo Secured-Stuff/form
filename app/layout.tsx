@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "remixicon/fonts/remixicon.css";
 import { Children as Props } from "./_types/types";
 
 const font = Inter({ subsets: ["latin"] });

@@ -1,14 +1,16 @@
 import clsx from "clsx";
-import { Children } from "../_types/types";
+import { Children, ButtonStyleType } from "../_types/types";
 import { ComponentProps } from "react";
 
 interface Props extends Children {
+  styleType: ButtonStyleType;
   loading?: boolean;
   wFull?: boolean;
 }
 
 export function Button({
   children,
+  styleType,
   loading,
   wFull,
   ...rest
@@ -16,9 +18,13 @@ export function Button({
   return (
     <button
       className={clsx(
-        "bg-primary my-3 rounded-md px-6 py-3 text-sm font-semibold text-white transition-all duration-300",
-        loading ? "opacity-75" : "hover:bg-primary-hover",
+        "my-3 rounded-md border px-6 py-3 text-sm font-semibold transition-all duration-300",
+        loading && "opacity-75",
         wFull && "w-full",
+        styleType === "Primary" && "border-primary bg-primary text-white",
+        styleType === "Primary" && !loading && "hover:bg-primary-hover",
+        styleType === "Secondary" &&
+          "bg-neutral-50 text-primary hover:border-primary",
       )}
       disabled={loading}
       {...rest}

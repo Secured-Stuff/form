@@ -12,6 +12,7 @@ import {
 import { Product } from "./_types/types";
 import { InvoiceItem } from "./_components/InvoiceItem";
 import { FormSelect } from "./_components/FormSelect";
+import { SignaturePad } from "./_components/SignaturePad";
 
 export default function Home() {
   const invoiceForm = useForm<Invoice>({
@@ -20,6 +21,8 @@ export default function Home() {
     reValidateMode: "onChange",
   });
 
+  const [total, setTotal] = useState<number>(0);
+  const [signatureUrl, setSignatureUrl] = useState<string>("");
   const [products, setProducts] = useState([
     {
       productName: "",
@@ -27,12 +30,6 @@ export default function Home() {
       price: 0,
     },
   ]);
-
-  const updateProduct = (index: number, updatedProduct: Product) => {
-    const updatedProducts = [...products];
-    updatedProducts[index] = updatedProduct;
-    setProducts(updatedProducts);
-  };
 
   const addProduct = () => {
     setProducts([
@@ -45,7 +42,22 @@ export default function Home() {
     ]);
   };
 
-  const [total, setTotal] = useState<number>(0);
+  const updateProduct = (index: number, updatedProduct: Product) => {
+    const updatedProducts = [...products];
+    updatedProducts[index] = updatedProduct;
+    setProducts(updatedProducts);
+  };
+
+  const deleteProduct = (indexToDelete: number) => {
+    if (products.length > 1) {
+      const update = products.filter(
+        (el: Product, index: number) => index !== indexToDelete,
+      );
+      setProducts(update);
+    } else {
+      window.alert("Wymagany jest conajmniej jeden produkt.");
+    }
+  };
 
   const calcTotalPurchasePrice = () => {
     const newTotal = products.reduce(
@@ -55,9 +67,14 @@ export default function Home() {
     setTotal(newTotal);
   };
 
+  const handleSignature = (url: string) => {
+    setSignatureUrl(url);
+  };
+
   const sendForm = (data: Invoice) => {
     console.log(data);
     console.log(products);
+    console.log(signatureUrl);
   };
 
   useEffect(() => {
@@ -124,11 +141,17 @@ export default function Home() {
                         onUpdateItem={(updatedItem) =>
                           updateProduct(index, updatedItem)
                         }
+                        onRemove={(index: number) => deleteProduct(index)}
                       />
                     ))}
                   </tbody>
                 </table>
-                <Button type="button" onClick={addProduct} wFull={true}>
+                <Button
+                  type="button"
+                  styleType="Primary"
+                  onClick={addProduct}
+                  wFull={true}
+                >
                   Dodaj produkt
                 </Button>
               </div>
@@ -171,9 +194,10 @@ export default function Home() {
                   rows={5}
                 />
               </div>
+              <SignaturePad onSignatureChange={handleSignature} />
             </div>
             <div className="mt-8 flex items-center justify-center">
-              <Button>Wyślij</Button>
+              <Button styleType="Primary">Wyślij</Button>
             </div>
           </form>
         </FormProvider>

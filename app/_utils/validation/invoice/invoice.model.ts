@@ -7,7 +7,7 @@ export const InvoiceSchema = z.object({
   address: z.string(),
   currency: z.string(),
   paymentMethod: z.string(),
-  additionalInformation: z.string(),
+  additionalInformation: z.string().optional(),
 });
 
 export type Invoice = z.infer<typeof InvoiceSchema>;
