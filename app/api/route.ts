@@ -32,11 +32,11 @@ export async function POST(request: NextRequest) {
   const mailOptions = {
     from: process.env.EMAIL,
     to: process.env.EMAIL,
-    subject: "Nowa faktura",
-    html: "Nowa faktura została przesłana w załączniku, jako plik PDF.",
+    subject: `Nowa faktura - ${body.fullName}`,
+    html: `Nowa faktura została przesłana od ${body.fullName} w załączniku, jako plik PDF.`,
     attachments: [
       {
-        filename: "faktura.pdf",
+        filename: `faktura-${body.fullName.split[0]}.pdf`,
         content: pdfBuffer,
         encoding: "base64",
       },

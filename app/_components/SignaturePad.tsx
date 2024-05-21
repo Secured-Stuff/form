@@ -29,7 +29,7 @@ export function SignaturePad({ onSignatureChange }: Readonly<Props>) {
 
   return (
     <div>
-      <label className="mb-2 block text-sm">Podpis</label>
+      <label className="mb-2 block text-sm">Signature / Podpis</label>
       <div className="rounded-md border">
         <SignatureCanvas
           canvasProps={{ width: 900, height: 200, className: "sigCanvas" }}
@@ -38,7 +38,7 @@ export function SignaturePad({ onSignatureChange }: Readonly<Props>) {
         />
       </div>
       <Button type="button" styleType="Secondary" onClick={handleClear}>
-        Wyczyść podpis
+        Clear signature / Wyczyść podpis
       </Button>
     </div>
   );

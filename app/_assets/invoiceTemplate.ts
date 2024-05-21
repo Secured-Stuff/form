@@ -1,17 +1,17 @@
-import { Body } from "../_types/types";
+import { Body, Product } from "../_types/types";
 
 export function invoiceTemplate(body: Body) {
   return `
   <head>
   <script src="https://cdn.tailwindcss.com"></script>
   </head>
-    <body>
+    <body class="text-sm">
       <header class="text-center mt-8">
         <h1 class="mb-2 text-2xl font-semibold uppercase text-indigo-500">Umowa kupna - sprzedaży</h1>
         <p>Zawarta w dniu: ${body.date}</p>
       </header>
       <main class="mt-10 mx-10 mb-20">
-      <div class="mb-10 pb-5 border-b grid grid-cols-2 gap-4">
+      <div class="mb-5 pb-5 border-b grid grid-cols-2 gap-4">
           <div>
             <h2 class="font-semibold">Sprzedający</h2>
             <p>${body.fullName}</p>
@@ -24,6 +24,7 @@ export function invoiceTemplate(body: Body) {
             <p>1 Maja 24</p>
             <p>64-600 Oborniki</p>
             <p>NIP: 6060112970</p>
+  
           </div>   
         </div>
         <div>
@@ -41,27 +42,30 @@ export function invoiceTemplate(body: Body) {
                 </tr>
               </thead>
               <tbody>
-                ${body.products.map(
-                  (el: any, index: number) =>
-                    `<tr>
-                  <td class="border text-center py-1">${index + 1}</td>
-                  <td class="border text-left pl-2 py-1" width="60%">${el.productName}</td>
-                  <td class="border text-center py-1">${el.quantity}</td>
-                  <td class="border text-right pr-2 py-1">${el.price} PLN</td>
-                  <td class="border text-right pr-2 py-1">${el.quantity * el.price} PLN</td>
-                </tr>`,
-                )}
+                ${body.products.map((el: Product, index: number) => {
+                  return `<tr>
+                    <td class="border text-center py-1">${index + 1}</td>
+                    <td class="border text-left pl-2 py-1" width="60%">${el.productName}</td>
+                    <td class="border text-center py-1">${el.quantity}</td>
+                    <td class="border text-right pr-2 py-1">${el.price} PLN</td>
+                    <td class="border text-right pr-2 py-1">${el.quantity * el.price} PLN</td>
+                    </tr>`;
+                })}
               </tbody>
             </table>
+            <div class="my-2 flex justify-end font-semibold">
+              <span class="mr-2">Razem:</span>
+              <span class="text-indigo-500">${body.totalPrice} PLN</span>
+            </div>
           </div>
           <div class="mb-2">
             <h2 class="font-semibold">§ 2</h2>
             <ol class="list-decimal pl-5">
               <li>
-                Kupujący zapłaci Sprzedawcy za ww. przedmioty cenę brutto w wysokości ${body.totalPrice} PLN.
+                Kupujący zapłaci Sprzedawcy za ww. przedmioty cenę brutto w wysokości: <span class="font-semibold">${body.totalPrice} PLN</span>.
               </li>
               <li>
-                Zapłata ceny brutto przez Kupującego nastąpi poprzez: ${body.paymentMethod}.
+                Zapłata ceny brutto przez Kupującego nastąpi poprzez: <span class="font-semibold">${body.paymentMethod}</span>.
               </li>
             </ol>
           </div>
@@ -94,23 +98,34 @@ export function invoiceTemplate(body: Body) {
           </div>
         </div>
     <main>
-    <footer class="flex justify-around gap-24 mt-20">
-      <div class="text-center">
-        <p>Podpis sprzedającego:</p>
-        <img src=${body.signatureUrl} width="180" class="mb-2 mt-4"/>
-        <div class="opacity-40">
-          <p>....................................</p>
-          <p>Sprzedający</p>
-      </div>
-      </div>
-      <div class="text-center">
-        <p>Podpis kupującego:</p>
-        <div class="opacity-40 mt-[50px]">
-          <p>....................................</p>
-          <p>Kupujący</p>
+    <footer>
+
+      <div class="flex justify-between mx-20 my-20 gap-48 text-center">
+      
+        <div class="w-full">
+          <div class="border-b flex flex-col justify-end text-center mb-2">
+          ${
+            body.signatureUrl &&
+            `<img src=${body.signatureUrl} width="180" class="mb-2 mt-4"/>`
+          }
+  
+          </div>
+          <p class="mt-2">Sprzedający</p>
         </div>
-        
-      </div>
+        <div class="w-full">
+          <div class="border-b flex flex-col justify-end text-center mb-2 h-16"></div>
+          <p class="mt-2">Kupujący</p>
+        </div>
+    </div>
+
+      ${
+        body.additionalInformation
+          ? `<div class="mt-14">
+          <h2 class="font-semibold">Dodatkowe informacje</h2>
+          <p>${body.additionalInformation}</p>
+        </div> `
+          : ""
+      }
     </footer>
 
     </body>

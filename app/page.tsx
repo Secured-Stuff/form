@@ -22,6 +22,7 @@ export default function Home() {
     reValidateMode: "onChange",
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [signatureUrl, setSignatureUrl] = useState<string>("");
   const [products, setProducts] = useState([
@@ -73,11 +74,19 @@ export default function Home() {
   };
 
   const sendForm = async (data: Invoice) => {
+    setIsLoading(true);
     const formattedData = { ...data, products, totalPrice, signatureUrl };
+
     try {
       const response = await axios.post("/api", formattedData);
+      if ((response.status = 200)) {
+        window.alert("Umowa kupna-sprzedaży została wysłana.");
+        window.location.reload();
+      }
     } catch (error: any) {
-      console.log(error);
+      window.alert("Wystąpił błąd!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,7 +98,7 @@ export default function Home() {
     <main className="mx-4">
       <div className="m-8 mx-auto max-w-4xl rounded-lg border bg-white p-4 ">
         <h1 className="my-2 text-center text-lg font-semibold md:text-xl lg:my-4 lg:text-2xl">
-          Umowa Kupna-Sprzedaży
+          Sales Agreement / Umowa Kupna-Sprzedaży
         </h1>
         <FormProvider {...invoiceForm}>
           <form onSubmit={invoiceForm.handleSubmit(sendForm)} className="my-8">
@@ -97,13 +106,13 @@ export default function Home() {
               <FormField
                 id="date"
                 type="date"
-                label="Wybierz datę"
+                label="Select date / Wybierz datę"
                 required={true}
               />
               <FormField
                 id="fullName"
-                label="Imię i nazwisko"
-                placeholder="Imię i nazwisko"
+                label="Full name / Imię i nazwisko"
+                placeholder="Full name / Imię i nazwisko"
                 required={true}
               />
               <FormField
@@ -115,27 +124,33 @@ export default function Home() {
               />
               <FormField
                 id="address"
-                label="Adres"
-                placeholder="Ulica, numer domu/mieszkania"
+                label="Address / Ulica, numer domu/mieszkania"
+                placeholder="Address / Ulica, numer domu/mieszkania"
                 required={true}
               />
               <FormField
                 id="city"
-                label="Kod pocztowy, miasto"
-                placeholder="Kod pocztowy, miasto"
+                label="Postal Code, City / Kod pocztowy, miasto"
+                placeholder="Postal Code, City / Kod pocztowy, miasto"
                 required={true}
               />
               <div>
-                <h2 className="mb-2 text-lg font-semibold">Produkty</h2>
+                <h2 className="mb-2 text-lg font-semibold">
+                  Products / Produkty
+                </h2>
 
                 <table className="w-full text-left text-sm">
                   <thead className="font-semibold">
                     <tr>
-                      <th className="border py-2 text-center">L.p.</th>
-                      <th className="border py-2 pl-2">Nazwa</th>
-                      <th className="border py-2 pl-2">Ilość</th>
-                      <th className="border py-2 pl-2">Cena za szt.</th>
-                      <th className="border pr-2 text-right">Łączna cena</th>
+                      <th className="border py-2 text-center">Lp.</th>
+                      <th className="border py-2 pl-2">Name / Nazwa</th>
+                      <th className="border py-2 pl-2">Quantity / Ilość</th>
+                      <th className="border py-2 pl-2">
+                        Price per unit / Cena za szt.
+                      </th>
+                      <th className="border pr-2 text-right">
+                        Total product price / Łączna cena
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -160,16 +175,16 @@ export default function Home() {
                   onClick={addProduct}
                   wFull={true}
                 >
-                  Dodaj produkt
+                  Add product / Dodaj produkt
                 </Button>
               </div>
               <h2 className="my-2 border-t pt-4 text-right text-lg font-semibold">
-                Łączna cena zakupu: {totalPrice}
+                Total Purchase Price / Łączna cena zakupu: {totalPrice}
               </h2>
               <div className="mt-8">
                 <FormSelect
                   id="currency"
-                  label="Waluta"
+                  label="Currency / Waluta"
                   options={[
                     {
                       id: "PLN",
@@ -181,7 +196,7 @@ export default function Home() {
                 />
                 <FormSelect
                   id="paymentMethod"
-                  label="Metoda płatności"
+                  label="Payment method / Metoda płatności"
                   options={[
                     {
                       id: "BLIK",
@@ -196,15 +211,17 @@ export default function Home() {
                 <FormField
                   id="additionalInformation"
                   type="textarea"
-                  label="Dodatkowe informacje"
-                  placeholder="Dodatkowe informacje"
+                  label="Additional information / Dodatkowe informacje"
+                  placeholder="Additional information / Dodatkowe informacje"
                   rows={5}
                 />
               </div>
               <SignaturePad onSignatureChange={handleSignature} />
             </div>
             <div className="mt-8 flex items-center justify-center">
-              <Button styleType="Primary">Wyślij</Button>
+              <Button styleType="Primary" loading={isLoading}>
+                Send / Wyślij
+              </Button>
             </div>
           </form>
         </FormProvider>
