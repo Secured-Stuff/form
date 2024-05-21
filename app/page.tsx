@@ -13,6 +13,7 @@ import { Product } from "./_types/types";
 import { InvoiceItem } from "./_components/InvoiceItem";
 import { FormSelect } from "./_components/FormSelect";
 import { SignaturePad } from "./_components/SignaturePad";
+import axios from "axios";
 
 export default function Home() {
   const invoiceForm = useForm<Invoice>({
@@ -21,7 +22,7 @@ export default function Home() {
     reValidateMode: "onChange",
   });
 
-  const [total, setTotal] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [signatureUrl, setSignatureUrl] = useState<string>("");
   const [products, setProducts] = useState([
     {
@@ -64,17 +65,20 @@ export default function Home() {
       (sum, el) => sum + el.price * el.quantity,
       0,
     );
-    setTotal(newTotal);
+    setTotalPrice(newTotal);
   };
 
   const handleSignature = (url: string) => {
     setSignatureUrl(url);
   };
 
-  const sendForm = (data: Invoice) => {
-    console.log(data);
-    console.log(products);
-    console.log(signatureUrl);
+  const sendForm = async (data: Invoice) => {
+    const formattedData = { ...data, products, totalPrice, signatureUrl };
+    try {
+      const response = await axios.post("/api", formattedData);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -109,14 +113,18 @@ export default function Home() {
                 placeholder="Email"
                 required={true}
               />
-
               <FormField
                 id="address"
                 label="Adres"
+                placeholder="Ulica, numer domu/mieszkania"
+                required={true}
+              />
+              <FormField
+                id="city"
+                label="Kod pocztowy, miasto"
                 placeholder="Kod pocztowy, miasto"
                 required={true}
               />
-
               <div>
                 <h2 className="mb-2 text-lg font-semibold">Produkty</h2>
 
@@ -155,9 +163,8 @@ export default function Home() {
                   Dodaj produkt
                 </Button>
               </div>
-
               <h2 className="my-2 border-t pt-4 text-right text-lg font-semibold">
-                Łączna cena zakupu: {total}
+                Łączna cena zakupu: {totalPrice}
               </h2>
               <div className="mt-8">
                 <FormSelect

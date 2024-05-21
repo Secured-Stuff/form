@@ -15,3 +15,17 @@ export interface Option {
   id: string;
   label: string;
 }
+
+export interface Body {
+  date: string;
+  fullName: string;
+  email: string;
+  address: string;
+  city: string;
+  products: Product[];
+  currency: string;
+  totalPrice: string;
+  paymentMethod: string;
+  additionalInformation?: string;
+  signatureUrl: string;
+}
