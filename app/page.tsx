@@ -89,6 +89,7 @@ export default function Home() {
       }
     } catch (error: any) {
       window.alert("Wystąpił błąd!");
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

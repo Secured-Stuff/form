@@ -3,10 +3,6 @@ import nodemailer from "nodemailer";
 import puppeteer from "puppeteer";
 import { invoiceTemplate } from "../_assets/invoiceTemplate";
 
-export function GET() {
-  return NextResponse.json({ success: true }, { status: 200 });
-}
-
 async function generatePDF(htmlContent: any) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -21,6 +17,9 @@ export async function POST(request: NextRequest) {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASSWORD,
@@ -45,9 +44,8 @@ export async function POST(request: NextRequest) {
 
   transporter.sendMail(mailOptions, (error) => {
     if (error) {
-      console.log("Wystąpił błąd: " + error);
+      return NextResponse.json({ success: false, error }, { status: 500 });
     }
+    return NextResponse.json({ success: true }, { status: 200 });
   });
-
-  return NextResponse.json({ success: true }, { status: 200 });
 }
