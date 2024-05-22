@@ -4,20 +4,22 @@ import puppeteer from "puppeteer";
 import { invoiceTemplate } from "../_assets/invoiceTemplate";
 
 async function generatePDF(htmlContent: any) {
-  const browser = await puppeteer.launch({
-    args: [
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-      "--single-process",
-      "--no-zygote",
-    ],
-    executablePath:
-      process.env.NODE_ENV === "production"
-        ? process.env.PUPPETEER_EXECUTABLE_PATH
-        : puppeteer.executablePath(),
-  });
+  const options =
+    process.env.NODE_ENV === "production"
+      ? {
+          args: [
+            "--disable-setuid-sandbox",
+            "--no-sandbox",
+            "--single-process",
+            "--no-zygote",
+          ],
+          executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+        }
+      : undefined;
+  const browser = await puppeteer.launch(options);
 
   const page = await browser.newPage();
+  await page.goto("https://developer.chrome.com/");
   await page.setContent(htmlContent);
   const pdfBuffer = await page.pdf({ format: "A4" });
   await browser.close();
