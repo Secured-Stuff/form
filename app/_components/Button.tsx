@@ -5,6 +5,7 @@ import { ComponentProps } from "react";
 interface Props extends Children {
   styleType: ButtonStyleType;
   loading?: boolean;
+  loadingLabel?: string;
   wFull?: boolean;
 }
 
@@ -12,6 +13,7 @@ export function Button({
   children,
   styleType,
   loading,
+  loadingLabel,
   wFull,
   ...rest
 }: Readonly<ComponentProps<"button"> & Props>) {
@@ -48,7 +50,7 @@ export function Button({
           />
         </svg>
       )}
-      {children}
+      {loading ? loadingLabel : children}
     </button>
   );
 }

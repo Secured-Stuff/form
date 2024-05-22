@@ -29,7 +29,7 @@ export function invoiceTemplate(body: Body) {
         </div>
         <div>
           <div class="mb-4">
-            <h2 class="font-semibold">§ 1</h2>
+            <h2 class="font-semibold">§1</h2>
             <p>Sprzedający sprzedaje, a Kupujący kupuje następujące rzeczy:</p>
             <table class="w-full my-2 text-sm">
               <thead>
@@ -42,15 +42,19 @@ export function invoiceTemplate(body: Body) {
                 </tr>
               </thead>
               <tbody>
-                ${body.products.map((el: Product, index: number) => {
-                  return `<tr>
+                ${body.products
+                  .map(
+                    (el: Product, index: number) => `
+                  <tr>
                     <td class="border text-center py-1">${index + 1}</td>
                     <td class="border text-left pl-2 py-1" width="60%">${el.productName}</td>
                     <td class="border text-center py-1">${el.quantity}</td>
                     <td class="border text-right pr-2 py-1">${el.price} ${body.currency}</td>
                     <td class="border text-right pr-2 py-1">${el.quantity * el.price} ${body.currency}</td>
-                    </tr>`;
-                })}
+                  </tr>
+                `,
+                  )
+                  .join("")}
               </tbody>
             </table>
             <div class="my-2 flex justify-end font-semibold">
@@ -59,7 +63,7 @@ export function invoiceTemplate(body: Body) {
             </div>
           </div>
           <div class="mb-4">
-            <h2 class="font-semibold">§ 2</h2>
+            <h2 class="font-semibold">§2</h2>
             <ol class="list-decimal pl-5">
               <li>
                 Kupujący zapłaci Sprzedawcy za ww. przedmioty cenę brutto w wysokości: <span class="font-semibold">${body.totalPrice} ${body.currency}</span>.
@@ -70,7 +74,7 @@ export function invoiceTemplate(body: Body) {
             </ol>
           </div>
           <div class="mb-4">
-            <h2 class="font-semibold">§ 3</h2>
+            <h2 class="font-semibold">§3</h2>
             <ol class="list-decimal pl-5">
               <li>
                 W sprawach nieuregulowanych niniejszą umową mają zastosowanie przepisy kodeksu
@@ -91,7 +95,7 @@ export function invoiceTemplate(body: Body) {
             </ol>
           </div>
           <div class="mb-4">
-            <h2 class="font-semibold">§ 4</h2>
+            <h2 class="font-semibold">§4</h2>
             <p>
               Umowę sporządzono w dwóch jednobrzmiących egzemplarzach, po jednym dla każdej ze stron.
             </p>
@@ -100,29 +104,29 @@ export function invoiceTemplate(body: Body) {
     <main>
     <footer>
 
-      <div class="flex justify-between mx-20 my-20 gap-48 text-center">
+      <div class="flex justify-between mx-20 mt-20 gap-48 text-center">
       
         <div class="w-full flex flex-col justify-between">
           <div class="border-b flex flex-col justify-end text-center mb-2">
           ${
             body.signatureUrl &&
-            `<img src=${body.signatureUrl} width="180" height="50" class="mb-2 mt-4 max-h-12 max-w-64 object-scale-down"/>`
+            `<img src="${body.signatureUrl}" width="180" height="50" class="mb-2 mt-4 max-h-12 max-w-64 object-scale-down"/>`
           }
   
           </div>
-          <p class="mt-2">Sprzedający</p>
+          <p>Sprzedający</p>
         </div>
         <div class="w-full flex flex-col justify-between">
           <div class="border-b flex flex-col justify-end text-center mb-2">
             <img src="https://scontent-fra5-2.xx.fbcdn.net/v/t1.15752-9/434051873_792283906142055_2952552472624443561_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=r_x-VzqlqgwQ7kNvgHtyMPv&_nc_ht=scontent-fra5-2.xx&oh=03_Q7cD1QGMjVN1vUqTTdirfzJU7dI3UHJj1Lf3t9dVu3v-1E-cMw&oe=6674700E" width="180" height="50" class="mb-2 mt-4 max-h-12 max-w-64 object-scale-down"/>
           </div>
-          <p class="mt-2">Kupujący</p>
+          <p>Kupujący</p>
         </div>
     </div>
 
       ${
         body.additionalInformation
-          ? `<div class="mt-14">
+          ? `<div class="mt-10">
           <h2 class="font-semibold">Dodatkowe informacje</h2>
           <p>${body.additionalInformation}</p>
         </div> `

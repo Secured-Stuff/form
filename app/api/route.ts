@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     html: `Nowa faktura od ${body.fullName} została przesłana w załączniku, jako plik PDF.`,
     attachments: [
       {
-        filename: `faktura-${body.fullName.replace(" ", "-").toLowerCase()}.pdf`,
+        filename: `faktura-${body.fullName.replace(" ", "_").toLowerCase()}.pdf`,
         content: pdfBuffer,
         encoding: "base64",
       },

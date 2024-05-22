@@ -225,7 +225,11 @@ export default function Home() {
               <SignaturePad onSignatureChange={handleSignature} />
             </div>
             <div className="mt-8 flex items-center justify-center">
-              <Button styleType="Primary" loading={isLoading}>
+              <Button
+                styleType="Primary"
+                loading={isLoading}
+                loadingLabel="Sending / Wysyłanie"
+              >
                 Send / Wyślij
               </Button>
             </div>
