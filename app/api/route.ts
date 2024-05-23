@@ -20,6 +20,7 @@ async function generatePDF(htmlContent: any) {
 
   const page = await browser.newPage();
   await page.goto("https://developer.chrome.com/");
+  await page.goto("https://cdn.tailwindcss.com/");
   await page.setContent(htmlContent);
   const pdfBuffer = await page.pdf({ format: "A4" });
   await browser.close();
