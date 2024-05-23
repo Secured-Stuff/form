@@ -22,9 +22,10 @@ export default function Home() {
     reValidateMode: "onChange",
   });
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate] = useState<Date>(new Date());
   const minDate = new Date(currentDate.getFullYear(), 0, 1);
   const maxDate = currentDate;
+  console.log("data: " + currentDate);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
