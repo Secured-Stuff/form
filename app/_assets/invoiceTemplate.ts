@@ -107,7 +107,7 @@ export function invoiceTemplate(body: Body) {
       <div class="flex justify-between mx-20 mt-20 gap-48 text-center">
       
         <div class="w-full flex flex-col justify-between">
-          <div class="flex flex-col justify-end text-center mb-2">
+          <div class="flex flex-col justify-end text-center">
           ${
             body.signatureUrl &&
             `<img src="${body.signatureUrl}" width="180" height="50" class="mb-2 mt-4 max-h-12 max-w-64 object-scale-down"/>`
@@ -117,7 +117,7 @@ export function invoiceTemplate(body: Body) {
           <p class="border-t pt-2">Sprzedający</p>
         </div>
         <div class="w-full flex flex-col justify-between">
-          <div class="flex flex-col justify-end text-center mb-2">
+          <div class="flex flex-col justify-end text-center">
             <img src="https://scontent-fra5-2.xx.fbcdn.net/v/t1.15752-9/434051873_792283906142055_2952552472624443561_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=5f2048&_nc_ohc=r_x-VzqlqgwQ7kNvgHtyMPv&_nc_ht=scontent-fra5-2.xx&oh=03_Q7cD1QGMjVN1vUqTTdirfzJU7dI3UHJj1Lf3t9dVu3v-1E-cMw&oe=6674700E" width="180" height="50" class="mb-2 mt-4 max-h-12 max-w-64 object-scale-down"/>
           </div>
           <p class="border-t pt-2">Kupujący</p>
