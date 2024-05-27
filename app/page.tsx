@@ -24,7 +24,6 @@ export default function Home() {
 
   const [currentDate] = useState<Date>(new Date());
   const minDate = new Date(currentDate.getFullYear(), 0, 1);
-  const maxDate = currentDate;
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -113,7 +112,6 @@ export default function Home() {
                 type="date"
                 label="Select date / Wybierz datę"
                 min={minDate.toISOString().slice(0, 10)}
-                max={maxDate.toISOString().slice(0, 10)}
                 required={true}
               />
               <FormField
